@@ -2,3 +2,7 @@
 development:
   adapter: mysql
   database: foosball_development
+  
+production:
+  adapter: mysql
+  database: foosball_production
