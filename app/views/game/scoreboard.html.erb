@@ -1,0 +1,50 @@
+<% print_date = "99999999" %>
+<% count = 1 %>
+
+<% @games.each do |game| %>
+  <% if game.created_at.strftime("%Y%m%d") != print_date %>
+    <div class="span-24" style="margin-top:1.5em;">
+      <h2 class="alt" style="border-bottom:1px dotted #666;"><%= game.created_at.strftime("%A, %B %e, %Y") %></h2>
+    </div>
+    <% count = 1 %>
+    <% print_date = game.created_at.strftime("%Y%m%d") %>
+  <% end %>
+  
+  <div class="game span-8 <%= (count % 3 == 0) ? 'last' : '' %>">
+    <div class="<%= ( game.team_a_score > game.team_b_score ) ? "winners" : "losers" %>">
+      <div class="span-6 participants">
+        <p class="players"><%= game.team_a[0].last_name %> <span class="alt">&amp;</span> <%= game.team_a[1].last_name %>
+      </div>
+      <div class="span-2 score last">
+        <p><%= game.team_a_score %></p>
+      </div>
+    </div>
+    <div class="<%= ( game.team_b_score > game.team_a_score ) ? "winners" : "losers" %>">
+      <div class="span-6 participants">
+        <p class="players"><%= game.team_b[0].last_name %> <span class="alt">&amp;</span> <%= game.team_b[1].last_name %>
+        <p class="small link"><%= link_to "Boxscore &rarr;", :controller => :game, :action => :show, :id => game.id %></p>
+      </div>
+      <div class="span-2 score last">
+        <p><%= game.team_b_score %></p>
+      </div>
+    </div>
+  </div>
+  <% count = count +1 %>
+<% end %>
+
+
+<style>
+  .game{margin-bottom:0.75em; padding-bottom:0.75em; border-bottom:1px solid #eee;}
+  .game p{margin:0; padding:0;}
+  .players{font-weight:bold;}
+  .score p{text-align:right; font-weight:bold;}
+  
+  .link a, .game .time{color:#336699; text-decoration:none;}
+  .link a:hover{text-decoration:underline;}
+  
+  .winners .players{color:#000;}
+  .winners .score p{color:#000;}
+  
+  .losers .players{color:#999;}
+  .losers .score p{color:#999;}
+</style>

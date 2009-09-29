@@ -1,0 +1,28 @@
+<h1>What's up Player?</h1>
+
+<% form_for :player, @player, :url => {:action => "new" } do |f| %>
+
+  <div class="span-24 prepend-1 addplayer">
+    <div class="span-12">
+      <label for="player_first_name">First Name</label>
+      <%= f.text_field :first_name, :class => "span-11" %>
+    </div>
+    <div class="span-12 last">
+      <label for="player_last_name">Last Name</label>
+      <%= f.text_field :last_name, :class => "span-11" %>
+    </div>
+    <div class="span-12">
+      <label for="player_nick_name">Nickname</label>
+      <%= f.text_field :nick_name %>
+    </div>
+    
+    <div class="span-24 button">
+      <%= submit_tag "Play on player" %>
+    </div>
+<% end %>
+
+<style>
+  .addplayer{background:#f1f1f1; border:1px solid #aeaeae; padding-top:2.5em; padding-bottom:2.5em;}
+  .addplayer input{font-size:1.5em;}
+  .addplayer div{margin:1.5em 0;}
+</style>

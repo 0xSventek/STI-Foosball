@@ -1,0 +1,33 @@
+<h1>STI Foosball Rankings</h1>
+<table id="leaderboard">
+  <thead>
+    <tr>
+      <th class="alt player" colspan="2">Player</th>
+      <th class="alt record">Record</th>
+      <th class="alt rating">Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @players.each_with_index do |p, i| %>
+    <tr>
+      <td class="rank"><%= (i+1).to_s %></td>
+      <td class="player"><%= p.full_name %></td>
+      <td class="record"><%= "(#{p.w}-#{p.l})" %></td>
+      <td class="rating"><%= p.rating %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<style>
+  #leaderboard{font-size:2.5em;}
+  .rating {text-align:right;} 
+  .record{text-align:center;}
+  .rank{color:#666; width:35px;}
+  td.player{font-weight:bold; letter-spacing:-2px;}
+  tbody tr * {border-bottom:1px solid #eee;}
+  td.record{color:#aaa;}
+  td.rating{color:#000; font-weight:bold;letter-spacing:-2px;}
+  
+  #leaderboard th{background-color:#E6EFC2; border-top:1px solid #C6D880; border-bottom:1px solid #C6D880; color:#529214; font-size:0.618em; font-style:normal; letter-spacing:3px;}
+</style>

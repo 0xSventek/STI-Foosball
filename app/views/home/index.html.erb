@@ -1,0 +1,124 @@
+<div class="span-8 border">
+  <h2 class="alt">Top 5 Players</h2>
+  <table id="leaderboard">
+    <thead>
+      <tr>
+        <th class="alt player" colspan="2">Player</th>
+        <th class="alt record">Record</th>
+        <th class="alt rating">Rating</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @top_5.each_with_index do |p, i| %>
+      <tr>
+        <td class="rank"><%= (i+1).to_s %></td>
+        <td class="player"><%= p.full_name %></td>
+        <td class="record"><%= "(#{p.w}-#{p.l})" %></td>
+        <td class="rating"><%= p.rating %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <p class="link"><%= link_to "Full Leaderboard &rarr;", :controller => :rankings %></p>
+  <h2 class="alt">Recent Results</h2>
+    
+    <% @recent_games.each do |game| %>
+      <div class="span-8 game">
+        <div class="<%= ( game.team_a_score > game.team_b_score ) ? "winners" : "losers" %>">
+          <div class="span-6 participants">
+            <p class="players"><%= game.team_a[0].last_name %> <span class="alt">&amp;</span> <%= game.team_a[1].last_name %>
+          </div>
+          <div class="span-2 score last">
+            <p><%= game.team_a_score %></p>
+          </div>
+        </div>
+        <div class="<%= ( game.team_b_score > game.team_a_score ) ? "winners" : "losers" %>">
+          <div class="span-6 participants">
+            <p class="players"><%= game.team_b[0].last_name %> <span class="alt">&amp;</span> <%= game.team_b[1].last_name %>
+            <p class="small link"><%= link_to time_ago_in_words(game.created_at), :controller => :game, :action => :show, :id => game.id %> ago</p>
+          </div>
+          <div class="span-2 score last">
+            <p><%= game.team_b_score %></p>
+          </div>
+        </div>
+        
+      </div>
+    <% end %>
+    <p class="link"><%= link_to "Full Scoreboard &rarr;", :controller => :game, :action => :scoreboard %></p>
+</div>
+<div class="span-16 last">
+  
+  <div id="new_result" class="span-15 prepend-1">
+    <h2>Add a new Result</h2>
+    <%= form_tag({:controller => :game, :action => "new"}, {:id => "new_result_form"}) %>  
+
+      <div class="span-12 team_members">
+        <label for="">Team A</label>
+        <%= collection_select :game, :player_1_id, @players, :id,  :full_name, {:prompt => true} %> 
+        <span class="large alt">&</span> 
+        <%= collection_select :game, :player_2_id, @players, :id,  :full_name, {:prompt => true}  %>
+      </div>
+      <div class="span-2 last score">
+        <label for="">Score</label>
+        <%= text_field_tag :team_a_score, nil, :class => "span-2" %>
+      </div>
+
+      <div class="span-12 team_members">
+        <label for="">Team B</label>
+        <%= collection_select :game, :player_3_id, @players, :id,  :full_name, {:prompt => true} %> 
+        <span class="large alt">&</span> 
+        <%= collection_select :game, :player_4_id, @players, :id,  :full_name, {:prompt => true}  %>
+      </div>
+      <div class="span-2 last score">
+        <label for="">Score</label>
+        <%= text_field_tag :team_b_score, nil, :class => "span-2" %>
+      </div>
+
+      <div class="span-16 notes">
+        <label for="">Game Notes</label>
+        <%= text_area_tag :notes, nil, :class => "span-14" %>
+      </div>
+
+      <div class="span-16">
+        <%= submit_tag "Save Game" %>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  .game{margin-bottom:0.75em; padding-bottom:0.75em; border-bottom:1px solid #ccc;}
+  .game p{margin:0; padding:0;}
+  .players{font-weight:bold;}
+  .score p{text-align:right; font-weight:bold;}
+  
+  .link a, .game .time{color:#336699; text-decoration:none;}
+  .link a:hover{text-decoration:underline;}
+  
+  .winners .players{color:#000;}
+  .winners .score p{color:#000;}
+  
+  .losers .players{color:#999;}
+  .losers .score p{color:#999;}
+  
+  .notes textarea{height:7.5em;}
+  
+  #leaderboard th{background-color:#E6EFC2; border-top:1px solid #C6D880; border-bottom:1px solid #C6D880; color:#529214;  font-style:normal; letter-spacing:3px;}
+  .rating {text-align:right;} 
+  .record{text-align:center;}
+  .rank{color:#666;}
+  td.player{font-weight:bold;}
+  tbody tr * {border-bottom:1px solid #eee;}
+  td.record{color:#aaa;}
+  td.rating{color:#000; font-weight:bold;}
+  
+  #new_result{ padding-bottom:1.5em; color:#40928c; background: #ECF4F4; border-top:2px solid; border-bottom:2px solid;}
+  #new_result h2{color:#40928c; letter-spacing:-1px; border:0;}
+  #new_result form{}
+  #new_result form label{line-height:0.85em;}
+  .team_members, .score {margin-bottom:0.5em;}
+  #new_result form .team_members select{width:210px;}
+  #new_result form .score input{text-align:center; font-size:1.667em; font-weight:bold;}
+  
+  h2{border-top:1px solid #666; border-bottom:1px dotted #ddd;}
+</style>

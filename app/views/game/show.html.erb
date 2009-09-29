@@ -1,0 +1,78 @@
+<h1 class="quiet"><%= @game.created_at.strftime("%A, %B %e, %Y") %></h1>
+
+<hr />
+<div class="span-24 team">
+  <div class="span-20 participants">
+      <p class="player"><%= @game.team_a[0].first_name %> <span class="last_name"><%= @game.team_a[0].last_name %></span><br />&nbsp;<span class="nickname alt"><%= @game.team_a[0].nick_name %></span></p>
+      <p class="player"><%= @game.team_a[1].first_name %> <span class="last_name"><%= @game.team_a[1].last_name %></span><br />&nbsp;<span class="nickname alt"><%= @game.team_a[1].nick_name %></span></p>
+  </div>
+  <div class="span-4 score last">
+    <p><%= @game.team_a_score %></p>
+  </div>
+</div>
+<hr />
+<div class="span-24 team">
+  <div class="span-20 participants">
+      <p class="player"><%= @game.team_b[0].first_name %> <span class="last_name"><%= @game.team_b[0].last_name %></span><br />&nbsp;<span class="nickname alt"><%= @game.team_b[0].nick_name %></span></p>
+      <p class="player"><%= @game.team_b[1].first_name %> <span class="last_name"><%= @game.team_b[1].last_name %></span><br />&nbsp;<span class="nickname alt"><%= @game.team_b[1].nick_name %></span></p>
+    
+  </div>
+  <div class="span-4 score last">
+    <p><%= @game.team_b_score %></p>
+  </div>
+</div>
+
+<hr />
+<div class="wrap-up">
+  <div class="span-12 border">
+    <%= "<p>COLLINSVILLE,CT&#8212;#{@game.notes}</p>" unless @game.notes.blank? %>
+  </div>
+  <table class="span-12 last" id="stats">
+    <caption class="alt">Ratings Changes</caption>
+    <% @game.team_a.each do |player| %>
+      <% player_data = player.game_data(@game.id) %>
+      <tr class="<%= ( player_data.rating_out > player_data.rating_in ) ? "positive" : "negative" %>">
+        <th class="name"><%= player.full_name %></th>
+        <td class="change"><%= ( player_data.rating_out > player_data.rating_in ) ? "+" : "" %>  <%= player_data.rating_out - player_data.rating_in %></td>
+        <td class="new_rating"><%= player_data.rating_out %></td>
+      <tr>
+    <% end %>
+    <% @game.team_b.each do |player| %>
+      <% player_data = player.game_data(@game.id) %>
+      <tr class="<%= ( player_data.rating_out > player_data.rating_in ) ? "positive" : "negative" %>">
+        <th class="name"><%= player.full_name %></th>
+        <td class="change"><%= ( player_data.rating_out > player_data.rating_in ) ? "+" : "" %>  <%= player_data.rating_out - player_data.rating_in %></td>
+        <td class="new_rating"><%= player_data.rating_out %></td>
+      <tr>
+    <% end %>
+  </table>
+</div>
+<style>
+  
+  hr{margin:0 !important; padding:0 !important;}
+  
+  .team{}
+  
+  .participants{padding:0;}  
+  .participants .player{float:left; width:395px; font-size:3.5em; letter-spacing:-2px; margin:0; color:#999; padding:0.5em 0; line-height:0.75em;}
+  .participants .player .first_name{}
+  .participants .player .last_name{font-weight:bold; color:#666;}
+  .participants .player .nickname{/*font-family:"Georgia"; font-style:italic;*/ font-size:0.5em; letter-spacing:-1px; color:#bbb;}
+    
+  .score p{font-size:5.0em; font-weight:bold; color:#000; text-align:center; margin:0; padding: 0;}
+  
+  #stats{font-size:2.0em;}
+  #stats th{font-family:"Helvetica"; text-transform:none; letter-spacing:-1px;}
+  #stats td{text-align:right;}
+  #stats tr * {border-bottom:1px solid #eee;}
+  #stats .positive .change{color:#C6D880;}
+  #stats .negative .change{color:#fbc2c4;}
+  
+  #stats .new_rating{font-weight:bold;}
+  #stats .positive .new_rating{color:#529214;}
+  #stats .negative .new_rating{color:#d12f19;}
+  
+  .wrap-up{margin:1.5em 0;}
+  .wrap-up p{font-size:1.1667em; line-height:1.7em;}
+  
+</style>

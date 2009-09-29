@@ -1,0 +1,47 @@
+<h1>Enter a game result</h1>
+
+<%= form_tag :action => "new" %>  
+  
+  <div class="span-12 team_members">
+    <label for="">Team A</label>
+    <%= collection_select :game, :player_1_id, @players, :id,  :full_name, {:prompt => true} %> 
+    <span class="large loud">&</span> 
+    <%= collection_select :game, :player_2_id, @players, :id,  :full_name, {:prompt => true}  %>
+  </div>
+  <div class="span-6 score">
+    <label for="">Score</label>
+    <%= text_field_tag :team_a_score, nil, :class => "span-2" %>
+  </div>
+  
+  <div class="span-12 team_members">
+    <label for="">Team B</label>
+    <%= collection_select :game, :player_3_id, @players, :id,  :full_name, {:prompt => true} %> 
+    <span class="large loud">&</span> 
+    <%= collection_select :game, :player_4_id, @players, :id,  :full_name, {:prompt => true}  %>
+  </div>
+  <div class="span-6 score">
+    <label for="">Score</label>
+    <%= text_field_tag :team_b_score, nil, :class => "span-2" %>
+  </div>
+  
+  <div class="span-18 notes">
+    <label for="">Game Notes</label>
+    <%= text_area_tag :notes, nil, :class => "span-14" %>
+  </div>
+  
+  <div class="span-24">
+    <%= submit_tag "Save Game" %>
+  </div>
+</form>
+
+
+<style>
+  .team_members{}
+  .team_members select{font-size:1.5em;}
+  
+  .score{}
+  .score input{font-size:1.5em;}
+  
+  .notes{margin:1.5em 0;}
+  .notes textarea{height:7.5em;}
+</style>
