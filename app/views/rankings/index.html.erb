@@ -11,7 +11,7 @@
     <% @players.each_with_index do |p, i| %>
     <tr>
       <td class="rank"><%= (i+1).to_s %></td>
-      <td class="player"><%= p.full_name %></td>
+      <td class="player"><%= name_link(p.full_name,p.id) %></td>
       <td class="record"><%= "(#{p.w}-#{p.l})" %></td>
       <td class="rating"><%= p.rating %></td>
     </tr>

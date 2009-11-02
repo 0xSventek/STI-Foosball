@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090924162938) do
+ActiveRecord::Schema.define(:version => 20091102181923) do
 
   create_table "games", :force => true do |t|
     t.integer  "team_a_score"
@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(:version => 20090924162938) do
     t.datetime "updated_at"
   end
 
-  create_table "players_games", :force => true do |t|
+  create_table "players_games", :id => false, :force => true do |t|
     t.integer  "player_id"
     t.integer  "game_id"
     t.string   "team",       :limit => 1

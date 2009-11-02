@@ -71,7 +71,7 @@ class GameController < ApplicationController
   end
 
   def show
-    @game     = Game.find(params[:id])
+    @game  = Game.find(params[:id])
   end
   
   def scoreboard

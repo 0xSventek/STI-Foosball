@@ -12,7 +12,7 @@
       <% @top_5.each_with_index do |p, i| %>
       <tr>
         <td class="rank"><%= (i+1).to_s %></td>
-        <td class="player"><%= p.full_name %></td>
+        <td class="player"><%= name_link(p.full_name,p.id) %></td>
         <td class="record"><%= "(#{p.w}-#{p.l})" %></td>
         <td class="rating"><%= p.rating %></td>
       </tr>
@@ -47,6 +47,31 @@
     <p class="link"><%= link_to "Full Scoreboard &rarr;", :controller => :game, :action => :scoreboard %></p>
 </div>
 <div class="span-16 last">
+  
+  <div id="current_streaks" class="span-16">
+    <h2>Current Streaks</h2>
+    <div class="span-8 winning border">
+      <div class="span-2 arrow-box">
+        <span class="arrow up">&uarr;</span>
+      </div>
+      <div class="span-5 last">
+        <p class="name"><%= name_link("#{@win_streak[:player].first_name} <strong>#{@win_streak[:player].last_name}</strong>",@win_streak[:player].id) %></p>
+        <p class="streak alt"><%= @win_streak[:count].to_s %>-game winning streak.</p>
+      </div>
+    </div>
+    
+    <div class="span-8 losing last">
+      <div class="span-2 arrow-box">
+        <span class="arrow down">&darr;</span>
+      </div>
+      <div class="span-5 last">
+        <p class="name"><%= name_link("#{@lose_streak[:player].first_name} <strong>#{@lose_streak[:player].last_name}</strong>",@lose_streak[:player].id) %></p>
+        <p class="streak alt"><%= @lose_streak[:count].to_s %>-game losing streak.</p>
+      </div>
+    </div>
+    
+    
+  </div>
   
   <div id="new_result" class="span-15 prepend-1">
     <h2>Add a new Result</h2>
@@ -121,4 +146,22 @@
   #new_result form .score input{text-align:center; font-size:1.667em; font-weight:bold;}
   
   h2{border-top:1px solid #666; border-bottom:1px dotted #ddd;}
+  
+  #current_streaks{border-top:2px solid #ddd; background:#fff; margin-bottom:1.5em; }
+  #current_streaks h2{border-top:0; color:#666;}
+  
+  #current_streaks div div p{margin:0; padding:0; text-align:left; font-size:1.5em;}
+  #current_streaks div div .name{font-size:2.0em;}
+  #current_streaks div div .streak{}
+  #current_streaks div div {text-align:center;}
+  #current_streaks div div .arrow{ font-size:5.0em; font-family:"Lucida Grande", monospace; font-weight:bold; margin:0; padding:0;}
+  
+  #current_streaks .winning div .streak{color:#529214;}
+  #current_streaks .losing div .streak{color:#d12f19;}
+  
+  #current_streaks .winning .arrow-box{background:#E6EFC2; border:1px solid #C6D880;}
+  #current_streaks .losing .arrow-box{background:#fbe3e4; border:1px solid #fbc2c4;}
+  
+  #current_streaks .winning div .arrow{color:#529214;}
+  #current_streaks .losing div .arrow{color:#d12f19;}
 </style>

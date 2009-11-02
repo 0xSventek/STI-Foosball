@@ -30,17 +30,17 @@
   <table class="span-12 last" id="stats">
     <caption class="alt">Ratings Changes</caption>
     <% @game.team_a.each do |player| %>
-      <% player_data = player.game_data(@game.id) %>
+      <% player_data = player.game_data({:game_id => @game.id}).first %>
       <tr class="<%= ( player_data.rating_out > player_data.rating_in ) ? "positive" : "negative" %>">
-        <th class="name"><%= player.full_name %></th>
+        <th class="name"><%= name_link(player.full_name,player.id) %></th>
         <td class="change"><%= ( player_data.rating_out > player_data.rating_in ) ? "+" : "" %>  <%= player_data.rating_out - player_data.rating_in %></td>
         <td class="new_rating"><%= player_data.rating_out %></td>
       <tr>
     <% end %>
     <% @game.team_b.each do |player| %>
-      <% player_data = player.game_data(@game.id) %>
+      <% player_data = player.game_data({:game_id => @game.id}).first %>
       <tr class="<%= ( player_data.rating_out > player_data.rating_in ) ? "positive" : "negative" %>">
-        <th class="name"><%= player.full_name %></th>
+        <th class="name"><%= name_link(player.full_name,player.id) %></th>
         <td class="change"><%= ( player_data.rating_out > player_data.rating_in ) ? "+" : "" %>  <%= player_data.rating_out - player_data.rating_in %></td>
         <td class="new_rating"><%= player_data.rating_out %></td>
       <tr>
@@ -64,7 +64,7 @@
   #stats{font-size:2.0em;}
   #stats th{font-family:"Helvetica"; text-transform:none; letter-spacing:-1px;}
   #stats td{text-align:right;}
-  #stats tr * {border-bottom:1px solid #eee;}
+  #stats tr td,#stats tr th {border-bottom:1px solid #eee;}
   #stats .positive .change{color:#C6D880;}
   #stats .negative .change{color:#fbc2c4;}
   

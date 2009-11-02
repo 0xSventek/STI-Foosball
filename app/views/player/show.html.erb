@@ -1,2 +1,110 @@
-<h1>Player#show</h1>
-<p>Find me in app/views/player/show.html.erb</p>
+<div class="span-24" id="player">
+  <div class="span-16 name">
+    <p><span class="firstname"><%= @player.first_name %></span> <%= "<span class='alt'>&#8220;#{@player.nick_name}&#8221;</span>" unless @player.nick_name.blank? %> <span class="lastname"><%= @player.last_name %></span></p>
+  </div>
+  <div class="span-8 last rating">
+    <p>
+      <img src="http://chart.apis.google.com/chart?cht=ls&chs=200x48&chco=529214&chd=t:<%= @player.sparkline_values %>">
+      <%= @player.rating %>
+    </p>
+  </div>
+</div>
+  
+  <div class="span-8">
+    <table id="leaderboard">
+      <thead>
+        <tr>
+          <th class="alt player" colspan="2">Player</th>
+          <th class="alt record">Record</th>
+          <th class="alt rating">Rating</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @players.each_with_index do |p, i| %>
+        <tr class="<%= "me" if p.id == @player.id %>">
+          <td class="rank"><%= (i+1).to_s %></td>
+          <td class="player"><%= p.full_name %></td>
+          <td class="record"><%= "(#{p.w}-#{p.l})" %></td>
+          <td class="rating"><%= p.rating %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="span-16 last">
+    
+    <% print_date = "99999999" %>
+    <% count = 1 %>
+
+    <% @player.games.sort{|a,b| b.created_at <=> a.created_at}.each do |game| %>
+      <% if game.created_at.strftime("%Y%m%d") != print_date %>
+        <div class="span-16" style="margin-top:1.5em;">
+          <h2 class="alt" style="border-bottom:1px dotted #666;"><%= game.created_at.strftime("%A, %B %e, %Y") %></h2>
+        </div>
+        <% count = 1 %>
+        <% print_date = game.created_at.strftime("%Y%m%d") %>
+      <% end %>
+
+      <div class="game span-8 <% if (count % 2 == 0) %>last<% end %>">
+        <div class="<%= ( game.team_a_score > game.team_b_score ) ? "winners" : "losers" %>">
+          <div class="span-6 participants">
+            <p class="players"><%= game.team_a[0].last_name %> <span class="alt">&amp;</span> <%= game.team_a[1].last_name %>
+          </div>
+          <div class="span-2 score last">
+            <p><%= game.team_a_score %></p>
+          </div>
+        </div>
+        <div class="<%= ( game.team_b_score > game.team_a_score ) ? "winners" : "losers" %>">
+          <div class="span-6 participants">
+            <p class="players"><%= game.team_b[0].last_name %> <span class="alt">&amp;</span> <%= game.team_b[1].last_name %>
+            <p class="small link"><%= link_to "Boxscore &rarr;", :controller => :game, :action => :show, :id => game.id %></p>
+          </div>
+          <div class="span-2 score last">
+            <p><%= game.team_b_score %></p>
+          </div>
+        </div>
+      </div>
+      <% count = count +1 %>
+    <% end %>
+  
+  </div>
+
+<style>
+  #leaderboard th{background-color:#E6EFC2; border-bottom:1px solid #C6D880; color:#529214;  font-style:normal; letter-spacing:3px;}
+  .rating {text-align:right;} 
+  .record{text-align:center;}
+  .rank{color:#aaa;}
+  td.player{font-weight:bold; color:#aaa;}
+  tbody tr * {border-bottom:1px solid #eee;}
+  td.record{color:#aaa;}
+  td.rating{color:#aaa; font-weight:bold;}
+  
+  .me td{background:#ffc;}
+  .me .player{color:#000;}
+  .me .rating {color:#000; text-align:right;} 
+  .me .record{color:#8E8F35; text-align:center;}
+  .me .rank{color:#666;}
+  
+  #player div p {margin:0; padding:0;}
+  #player {border-bottom:4px solid #C6D880; padding:0.5em 0;}
+  #player *{margin-bottom:0; padding-bottom:0;}
+  #player .name{padding:0.25em 0 0 0;  font-size:3.5em; letter-spacing:-2px;}
+  #player .name .firstname{color:#333;}
+  #player .name .lastname{font-weight:bold; color:#000;}
+  #player .rating{padding:0em 0 0 0; color:#529214; font-weight:bold; font-size:3.5em; letter-spacing:-2px; text-align:right;}
+  #player .rating img{}
+  
+  .game{margin-bottom:0.75em; padding-bottom:0.75em; border-bottom:1px solid #eee;}
+  .game p{margin:0; padding:0;}
+  .players{font-weight:bold;}
+  .score p{text-align:right; font-weight:bold;}
+  
+  .link a, .game .time{color:#336699; text-decoration:none;}
+  .link a:hover{text-decoration:underline;}
+  
+  .winners .players{color:#000;}
+  .winners .score p{color:#000;}
+  
+  .losers .players{color:#999;}
+  .losers .score p{color:#999;}
+</style>

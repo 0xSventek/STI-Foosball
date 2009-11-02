@@ -14,6 +14,8 @@ class PlayerController < ApplicationController
   end
 
   def show
+    @players  = Player.find(:all, :order => "rating desc")
+    @player   = @players.select{|p| p.id == params[:id].to_i}.first
   end
 
   def edit
